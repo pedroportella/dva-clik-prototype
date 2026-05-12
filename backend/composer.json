@@ -1,6 +1,6 @@
 {
-  "name": "pedroportella/citizen-service-record-backend",
-  "description": "Drupal 10 backend skeleton for the DVA CLIK operations prototype.",
+  "name": "pedroportella/dva-clik-operations-backend",
+  "description": "Drupal 10 backend for the DVA CLIK operations prototype.",
   "type": "project",
   "require": {
     "php": "^8.3",
