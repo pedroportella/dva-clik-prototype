@@ -11,18 +11,6 @@ Vue 3 + Drupal 10/GovCMS-oriented prototype for the DVA Senior Web Developer rol
 - CLIKChat-readiness thinking, where content accuracy and currency directly affect AI-assisted staff support.
 - GitHub Actions CI evidence for repeatable lint, unit test, typecheck, build, browser smoke test and backend metadata validation.
 
-## Public research findings
-
-Publicly visible evidence indicates:
-
-- CLIK is running Drupal 10 with GovCMS metadata.
-- CLIK uses a custom Drupal theme under `themes/custom/custom/iconagency`.
-- CLIK's page shell is Twig/Drupal themed, with Bootstrap Barrio templates and conventional Drupal behaviours rather than a public SPA shell.
-- The main DVA website is also Drupal 10 + GovCMS and uses a Bootstrap 5 subtheme named `dva_b5subtheme`.
-- The main DVA website includes a public AI assistant web component loaded from `https://dva-ai-assets.dva.gov.au/dist/dva-ai-widget.umd.js`.
-- That AI widget bundle contains React code, but the public page shell remains Drupal/Twig/Bootstrap.
-- An Agileware case study says DVA engaged Agileware to build a new CLIK website, including Drupal theme design, custom workflow with Active Directory review routing, migration, editor training and project management.
-
 ## Architecture
 
 The repository keeps the prototype concerns separated:
@@ -114,6 +102,7 @@ docker compose exec php php -r '
 new PDO("mysql:host=mariadb;dbname=citizen_service", "citizen_service", "citizen_service");
 echo "DB OK\n";
 '
+sleep 5 # in case we need to copy all commands in one go
 
 # Install Drupal using the local settings.php database configuration.
 docker compose exec php vendor/bin/drush site:install minimal \
@@ -121,6 +110,7 @@ docker compose exec php vendor/bin/drush site:install minimal \
   --account-name=admin \
   --account-pass=admin \
   -y
+  sleep 5 # in case we need to copy all commands in one go
 
 # Enable the retained custom API module and rebuild Drupal cache.
 docker compose exec php vendor/bin/drush pm:enable citizen_service_record -y
