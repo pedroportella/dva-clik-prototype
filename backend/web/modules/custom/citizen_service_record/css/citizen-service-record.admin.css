@@ -1,0 +1,260 @@
+:root {
+  --csr-admin-bg: #f3f6fa;
+  --csr-admin-surface: #ffffff;
+  --csr-admin-surface-muted: #eef4fb;
+  --csr-admin-text: #102a43;
+  --csr-admin-muted: #52606d;
+  --csr-admin-border: #d7dde5;
+  --csr-admin-primary: #005eb8;
+  --csr-admin-primary-dark: #003f7d;
+  --csr-admin-focus: #ffbf47;
+  --csr-admin-success-bg: #e8f5ee;
+  --csr-admin-success-text: #14532d;
+}
+
+body {
+  margin: 0;
+  color: var(--csr-admin-text);
+  background: var(--csr-admin-bg);
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.5;
+}
+
+body.path-user,
+body.path-admin,
+body.path-citizen-service-records {
+  padding: 1.5rem;
+}
+
+a {
+  color: var(--csr-admin-primary);
+}
+
+a:focus,
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 3px solid var(--csr-admin-focus);
+  outline-offset: 2px;
+}
+
+.region-content,
+.layout-container,
+.page-wrapper,
+main,
+#page,
+#main-wrapper {
+  max-width: 90rem;
+}
+
+.region-content,
+main,
+#content {
+  padding: 1.5rem;
+  background: var(--csr-admin-surface);
+  border: 1px solid var(--csr-admin-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 1rem 2rem rgb(16 42 67 / 8%);
+}
+
+h1,
+h2,
+h3 {
+  margin-top: 0;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+h2 {
+  font-size: 1.35rem;
+}
+
+ul.tabs,
+.tabs ul,
+nav.tabs ul,
+.local-tasks ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0;
+  margin: 1rem 0;
+  list-style: none;
+}
+
+ul.tabs a,
+.tabs a,
+nav.tabs a,
+.local-tasks a,
+.button,
+.button--primary,
+input[type='submit'] {
+  display: inline-block;
+  padding: 0.65rem 0.9rem;
+  color: #ffffff;
+  background: var(--csr-admin-primary);
+  border: 2px solid var(--csr-admin-primary);
+  border-radius: 0.375rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+ul.tabs a:hover,
+.tabs a:hover,
+nav.tabs a:hover,
+.local-tasks a:hover,
+.button:hover,
+.button--primary:hover,
+input[type='submit']:hover {
+  background: var(--csr-admin-primary-dark);
+  border-color: var(--csr-admin-primary-dark);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  background: var(--csr-admin-surface);
+}
+
+th,
+td {
+  padding: 0.85rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--csr-admin-border);
+}
+
+th {
+  color: var(--csr-admin-text);
+  background: var(--csr-admin-surface-muted);
+}
+
+tr:hover td {
+  background: #f8fbff;
+}
+
+.csr-admin-hero {
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, var(--csr-admin-primary-dark), var(--csr-admin-primary));
+  border-radius: 0.85rem;
+}
+
+.csr-admin-hero h1,
+.csr-admin-hero p {
+  margin-bottom: 0;
+}
+
+.csr-admin-hero p + h1 {
+  margin-top: 0.25rem;
+}
+
+.csr-admin-kicker {
+  margin: 0 0 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.csr-admin-summary,
+.csr-admin-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.csr-admin-stat,
+.csr-admin-panel {
+  padding: 1rem;
+  background: var(--csr-admin-surface);
+  border: 1px solid var(--csr-admin-border);
+  border-radius: 0.75rem;
+  box-shadow: 0 0.5rem 1.25rem rgb(16 42 67 / 6%);
+}
+
+.csr-admin-stat {
+  background: var(--csr-admin-surface-muted);
+}
+
+.csr-admin-stat strong {
+  display: block;
+  font-size: 2rem;
+}
+
+.csr-admin-muted {
+  color: var(--csr-admin-muted);
+}
+
+.csr-admin-status {
+  display: inline-block;
+  padding: 0.25rem 0.55rem;
+  color: var(--csr-admin-success-text);
+  background: var(--csr-admin-success-bg);
+  border-radius: 999rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.csr-admin-reference {
+  font-weight: 700;
+}
+
+.csr-admin-table-wrap {
+  overflow-x: auto;
+}
+
+.csr-admin-definition-list {
+  margin: 0;
+}
+
+.csr-admin-definition-list div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.35fr) 1fr;
+  gap: 1rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--csr-admin-border);
+}
+
+.csr-admin-definition-list div:last-child {
+  border-bottom: 0;
+}
+
+.csr-admin-definition-list dt {
+  font-weight: 700;
+}
+
+.csr-admin-definition-list dd {
+  margin: 0;
+}
+
+.csr-admin-back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+@media (max-width: 48rem) {
+  body.path-user,
+  body.path-admin,
+  body.path-citizen-service-records {
+    padding: 0.75rem;
+  }
+
+  .region-content,
+  main,
+  #content {
+    padding: 1rem;
+  }
+
+  .csr-admin-definition-list div {
+    grid-template-columns: 1fr;
+    gap: 0.25rem;
+  }
+}

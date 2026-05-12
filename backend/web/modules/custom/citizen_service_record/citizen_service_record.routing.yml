@@ -1,0 +1,55 @@
+citizen_service_record.list:
+  path: "/api/service-records"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::list'
+  methods: [GET]
+  requirements:
+    _permission: "access content"
+
+citizen_service_record.create:
+  path: "/api/service-records"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::store'
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+
+citizen_service_record.upload_document:
+  path: "/api/service-records/documents"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::uploadDocument'
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+
+citizen_service_record.view:
+  path: "/api/service-records/{id}"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::view'
+  methods: [GET]
+  requirements:
+    _permission: "access content"
+
+citizen_service_record.delete:
+  path: "/api/service-records/{id}"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::delete'
+  methods: [DELETE]
+  requirements:
+    _permission: "access content"
+
+citizen_service_record.admin_applications:
+  path: "/admin/citizen-service-records"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::adminList'
+    _title: "Citizen service applications"
+  requirements:
+    _permission: "access administration pages"
+
+citizen_service_record.admin_application_view:
+  path: "/admin/citizen-service-records/{id}"
+  defaults:
+    _controller: '\Drupal\citizen_service_record\Controller\ServiceRecordController::adminView'
+    _title: "Citizen service application"
+  requirements:
+    _permission: "access administration pages"

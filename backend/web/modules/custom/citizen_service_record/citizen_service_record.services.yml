@@ -1,0 +1,4 @@
+services:
+  citizen_service_record.service_record_repository:
+    class: Drupal\citizen_service_record\Service\ServiceRecordRepository
+    arguments: ['@database']

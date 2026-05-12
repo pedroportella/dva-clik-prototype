@@ -1,0 +1,9 @@
+<?php
+// backend/web/modules/custom/citizen_service_record/citizen_service_record.module
+
+/**
+ * Implements hook_page_attachments().
+ */
+function citizen_service_record_page_attachments(array &$attachments): void {
+  $attachments['#attached']['library'][] = 'citizen_service_record/admin';
+}

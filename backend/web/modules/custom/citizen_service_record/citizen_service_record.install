@@ -1,0 +1,69 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function citizen_service_record_schema(): array {
+  $schema['citizen_service_record_application'] = [
+    'description' => 'Stores submitted Citizen Service Record prototype applications.',
+    'fields' => [
+      'id' => [
+        'description' => 'Stable service record identifier.',
+        'type' => 'varchar',
+        'length' => 96,
+        'not null' => TRUE,
+      ],
+      'reference_number' => [
+        'description' => 'Human-readable application reference.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'applicant_name' => [
+        'description' => 'Applicant display name for list views.',
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+      ],
+      'status' => [
+        'description' => 'Current prototype workflow status.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => 'SUBMITTED',
+      ],
+      'submitted_at' => [
+        'description' => 'ISO-8601 submission timestamp.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+      ],
+      'payload' => [
+        'description' => 'Full submitted service record payload as JSON.',
+        'type' => 'text',
+        'size' => 'big',
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['id'],
+    'indexes' => [
+      'submitted_at' => ['submitted_at'],
+      'reference_number' => ['reference_number'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
+ * Add the database-backed service record table for existing prototype installs.
+ */
+function citizen_service_record_update_1001(): void {
+  $schema = \Drupal::database()->schema();
+
+  if (!$schema->tableExists('citizen_service_record_application')) {
+    $schema_definition = citizen_service_record_schema();
+    $schema->createTable('citizen_service_record_application', $schema_definition['citizen_service_record_application']);
+  }
+}

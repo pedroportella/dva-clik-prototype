@@ -1,0 +1,4 @@
+admin:
+  css:
+    theme:
+      css/citizen-service-record.admin.css: {}

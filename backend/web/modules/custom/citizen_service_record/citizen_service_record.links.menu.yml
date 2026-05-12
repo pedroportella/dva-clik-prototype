@@ -1,0 +1,6 @@
+citizen_service_record.admin_applications:
+  title: 'Citizen service applications'
+  description: 'Review submitted citizen service applications and uploaded files.'
+  route_name: citizen_service_record.admin_applications
+  parent: system.admin_content
+  weight: 20
