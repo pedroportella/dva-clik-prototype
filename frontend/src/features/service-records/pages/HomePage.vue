@@ -2,12 +2,11 @@
   <div class="workspace">
     <section class="hero-panel" aria-labelledby="page-title">
       <div>
-        <p class="eyebrow">DVA CLIK Drupal 10 + GovCMS prototype</p>
+        <p class="eyebrow">DVA CLIK operations</p>
         <h1 id="page-title">Policy publishing and platform health console</h1>
         <p class="lead">
-          A senior Drupal developer prototype for coordinating the urgent upload of
-          2,000 policy pages into CLIK while improving content quality, accessibility,
-          platform health and CLIKChat readiness.
+          Coordinate urgent policy uploads, owner confirmations, content quality,
+          service health, support requests and release readiness in one working view.
         </p>
       </div>
       <dl class="hero-facts" aria-label="Role facts">
@@ -16,17 +15,41 @@
           <dd>Policy upload</dd>
         </div>
         <div>
-          <dt>Platform</dt>
-          <dd>Drupal 10 + GovCMS</dd>
+          <dt>Operational status</dt>
+          <dd>{{ backendStatusLabel }}</dd>
         </div>
         <div>
-          <dt>Front end fit</dt>
-          <dd>Twig, Bootstrap, React AI widget</dd>
+          <dt>Last checked</dt>
+          <dd>{{ lastCheckedLabel }}</dd>
         </div>
       </dl>
     </section>
 
-    <section class="metric-grid" aria-label="Program status">
+    <section
+      v-if="backendError"
+      class="system-alert"
+      role="alert"
+      aria-labelledby="system-alert-title"
+    >
+      <div>
+        <p class="eyebrow">Service unavailable</p>
+        <h2 id="system-alert-title">Operational data cannot be loaded</h2>
+        <p>
+          The publishing console needs the supporting service to be available before
+          work queues and status data can be reviewed.
+        </p>
+        <p class="helper-text">{{ backendError }}</p>
+      </div>
+      <button class="button" type="button" @click="checkBackendAvailability">
+        Retry
+      </button>
+    </section>
+
+    <section v-if="backendLoading" class="system-alert system-alert--loading" role="status">
+      <p>Checking operational data service...</p>
+    </section>
+
+    <section v-if="backendAvailable" class="metric-grid" aria-label="Program status">
       <article v-for="metric in metrics" :key="metric.label" class="metric-card">
         <span class="metric-card__label">{{ metric.label }}</span>
         <strong>{{ metric.value }}</strong>
@@ -34,7 +57,7 @@
       </article>
     </section>
 
-    <div class="operations-layout">
+    <div v-if="backendAvailable" class="operations-layout">
       <section class="panel panel--span" aria-labelledby="queue-title">
         <div class="panel-heading">
           <div>
@@ -102,7 +125,7 @@
 
       <section class="panel" aria-labelledby="health-title">
         <p class="eyebrow">Health assessment</p>
-        <h2 id="health-title">Drupal platform checks</h2>
+        <h2 id="health-title">Service health checks</h2>
         <ul class="check-list">
           <li v-for="check in healthChecks" :key="check.label">
             <span :class="['check-dot', `check-dot--${check.state}`]" aria-hidden="true" />
@@ -116,7 +139,7 @@
 
       <section class="panel" aria-labelledby="audit-title">
         <p class="eyebrow">Content audit</p>
-        <h2 id="audit-title">Quality and CLIKChat readiness</h2>
+        <h2 id="audit-title">Quality and release readiness</h2>
         <div class="audit-stack">
           <article v-for="item in auditFindings" :key="item.label" class="audit-item">
             <div>
@@ -129,8 +152,8 @@
       </section>
 
       <section class="panel panel--span" aria-labelledby="architecture-title">
-        <p class="eyebrow">Strategic platform planning</p>
-        <h2 id="architecture-title">CLIK and DVA website alignment options</h2>
+        <p class="eyebrow">Strategic planning</p>
+        <h2 id="architecture-title">Service alignment options</h2>
         <div class="option-grid">
           <article v-for="option in architectureOptions" :key="option.title" class="option-card">
             <span>{{ option.mode }}</span>
@@ -178,10 +201,64 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 const selectedLibrary = ref('All libraries');
 const selectedState = ref('All states');
+const backendLoading = ref(true);
+const backendAvailable = ref(false);
+const backendError = ref('');
+const lastChecked = ref<Date | null>(null);
+
+const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? '/api';
+
+const backendStatusLabel = computed(() => {
+  if (backendLoading.value) {
+    return 'Checking';
+  }
+
+  return backendAvailable.value ? 'Available' : 'Unavailable';
+});
+
+const lastCheckedLabel = computed(() => {
+  if (!lastChecked.value) {
+    return 'Not yet checked';
+  }
+
+  return new Intl.DateTimeFormat('en-AU', {
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(lastChecked.value);
+});
+
+async function checkBackendAvailability() {
+  backendLoading.value = true;
+  backendError.value = '';
+
+  try {
+    const response = await fetch(`${apiBaseUrl}/service-records`, {
+      headers: {
+        Accept: 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Service returned HTTP ${response.status}.`);
+    }
+
+    backendAvailable.value = true;
+  } catch (error) {
+    backendAvailable.value = false;
+    backendError.value = error instanceof Error ? error.message : 'Unable to contact the supporting service.';
+  } finally {
+    lastChecked.value = new Date();
+    backendLoading.value = false;
+  }
+}
+
+onMounted(() => {
+  void checkBackendAvailability();
+});
 
 const metrics = [
   { label: 'Uploaded', value: '742 / 2,000', detail: '37% complete across priority policy batches' },
@@ -246,8 +323,8 @@ const filteredBatches = computed(() =>
 );
 
 const healthChecks = [
-  { label: 'Drupal core and GovCMS posture', detail: 'Drupal 10 public footprint confirmed; patch cadence to be validated in environment.', state: 'review' },
-  { label: 'Custom theme surface', detail: 'CLIK uses a custom Twig theme with Bootstrap Barrio conventions.', state: 'good' },
+  { label: 'Release posture', detail: 'Version, change window and patch cadence ready for environment validation.', state: 'review' },
+  { label: 'Template consistency', detail: 'High-use page patterns queued for quality and accessibility review.', state: 'good' },
   { label: 'Accessibility', detail: 'Automated WCAG checks plus manual keyboard review proposed for high-traffic templates.', state: 'review' },
   { label: 'Performance', detail: 'Cache strategy, image styles and search pages queued for profiling.', state: 'watch' },
 ];
@@ -255,7 +332,7 @@ const healthChecks = [
 const auditFindings = [
   { label: 'Missing metadata', detail: 'Policy type, owner or review date absent', count: '141' },
   { label: 'Broken references', detail: 'Legacy ComLaw and stale internal links', count: '76' },
-  { label: 'Heading structure', detail: 'Skipped levels affecting accessibility and chatbot chunking', count: '63' },
+  { label: 'Heading structure', detail: 'Skipped levels affecting accessibility and content reuse', count: '63' },
   { label: 'Duplicate content', detail: 'Near-duplicate policy pages requiring owner decision', count: '46' },
 ];
 
@@ -263,21 +340,21 @@ const architectureOptions = [
   {
     mode: 'Option A',
     title: 'Stabilise CLIK in place',
-    summary: 'Keep CLIK on its current Drupal 10/GovCMS track, prioritising migration tooling, editor workflow, accessibility and health remediation.',
+    summary: 'Keep the current service stable while prioritising migration controls, editor workflow, accessibility and health remediation.',
     risk: 'Lowest delivery risk',
     bestFor: 'Immediate 2,000-page program',
   },
   {
     mode: 'Option B',
     title: 'Shared design and search layer',
-    summary: 'Align navigation, Bootstrap 5 components, metadata and AI search conventions with the main DVA website while preserving CLIK information architecture.',
+    summary: 'Align navigation, metadata and assisted-search conventions while preserving CLIK information architecture.',
     risk: 'Moderate integration risk',
     bestFor: 'Consistent user experience',
   },
   {
     mode: 'Option C',
     title: 'Progressive platform convergence',
-    summary: 'Define a staged path for shared GovCMS services, content APIs and common AI assistant signals after the time-critical migration is stable.',
+    summary: 'Define a staged path for shared services and common content signals after the time-critical migration is stable.',
     risk: 'Higher governance risk',
     bestFor: 'Long-term platform strategy',
   },

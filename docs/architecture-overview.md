@@ -2,9 +2,9 @@
 
 ## Overview
 
-The DVA CLIK prototype uses the existing Drupal/Vue scaffold as an interview artifact for a government knowledge-library program.
+The DVA CLIK prototype uses a Drupal/Vue scaffold for a government knowledge-library program.
 
-The frontend demonstrates the operational surface a senior Drupal developer could use to coordinate publishing, audit and health-assessment work. The backend scaffold remains Drupal 10-oriented so the concept can be mapped to content entities, workflows, Views dashboards, queues and migration jobs.
+The application demonstrates an operational surface a delivery team could use to coordinate publishing, audit and health-assessment work. The backend scaffold remains Drupal-oriented so the concept can be mapped to content entities, workflows, Views dashboards, queues and migration jobs.
 
 ## Delivered Capabilities
 
@@ -13,7 +13,6 @@ The frontend demonstrates the operational surface a senior Drupal developer coul
 - Content audit summary for metadata, links, headings and duplicates.
 - Platform health checks for Drupal/GovCMS, theme surface, accessibility and performance.
 - Architecture options for CLIK alignment with the main DVA website.
-- Candidate pitch and research notes aligned to the supplied response form.
 
 ## Frontend Layer
 
@@ -55,4 +54,4 @@ The repository keeps the original Docker-oriented scaffold:
 - Make policy-owner decisions and blockers visible.
 - Treat accessibility and metadata as content quality, not late-stage polish.
 - Keep the platform health roadmap concrete enough for ICT triage.
-- Avoid claiming a SPA framework for DVA/CLIK production where public evidence shows Drupal/Twig/Bootstrap page shells.
+- Keep the public-facing console focused on operational decisions rather than implementation detail.

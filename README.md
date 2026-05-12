@@ -18,8 +18,7 @@ The repository keeps the prototype concerns separated:
 - `frontend`: Vue 3, Vite, TypeScript and Sass dashboard prototype.
 - `backend`: Drupal 10 scaffold with Composer, Drush and a reusable custom-module pattern.
 - `docker`: Nginx and PHP-FPM local runtime configuration.
-- `docs`: Architecture, research, testing and CI/CD notes.
-- `pitch`: One-page candidate response draft aligned to the supplied response form.
+- `docs`: Architecture, testing and CI/CD notes.
 
 In a production CLIK implementation, the dashboard concepts would map to Drupal content types/entities, taxonomy vocabularies, Content Moderation workflows, Migrate/Batch API jobs, Queue workers, Views dashboards and admin routes.
 
@@ -27,18 +26,22 @@ In a production CLIK implementation, the dashboard concepts would map to Drupal 
 
 - Node.js 20.19+ for CI parity. The repo includes `.nvmrc` set to Node 22.12.0.
 - pnpm 10.18.3, managed via Corepack and `frontend/package.json`.
-- Docker and Docker Compose for the Drupal/MariaDB/Nginx scaffold.
+- Docker Desktop, Docker and Docker Compose for the Drupal/MariaDB/Nginx scaffold. Docker Desktop must be running before Docker commands are used.
 - Playwright Chromium dependencies, required only for local browser tests.
 - Composer is optional locally if using Docker; the PHP container can run Composer for the backend scaffold.
 
 ## Local setup
 
+Run from the repository root.
+
 ```bash
+corepack enable
+corepack prepare pnpm@10.18.3 --activate
 pnpm --dir frontend install
 pnpm --dir frontend dev
 ```
 
-The frontend runs at `http://localhost:5173`.
+The frontend runs at `http://localhost:5173`. If the backend service is not available, the console shows a service-unavailable message instead of operational data.
 
 Useful local checks:
 
@@ -145,6 +148,8 @@ curl -i http://localhost:8080/api/service-records
 curl -i http://localhost:5173
 
 # Install frontend dependencies for local quality checks.
+corepack enable
+corepack prepare pnpm@10.18.3 --activate
 pnpm --dir frontend install
 
 # Install the Chromium browser used by Playwright.
@@ -163,6 +168,8 @@ pnpm --dir frontend test:e2e:ui
 ```
 
 ## Daily development commands
+
+Run from the repository root.
 
 ```bash
 # Start the local stack in the background.
@@ -193,6 +200,8 @@ pnpm --dir frontend test:e2e
 ```
 
 ## Docker
+
+Run from the repository root.
 
 ```bash
 # Start the full local stack with logs attached.
@@ -266,6 +275,8 @@ The backend validation job installs PHP 8.3 and Composer, then runs:
 
 ## Backend commands
 
+Run from the repository root unless the command explicitly changes directory.
+
 ```bash
 # Install backend dependencies.
 docker compose run --rm php composer install
@@ -289,6 +300,8 @@ composer validate --no-check-publish
 
 ## Database commands
 
+Run from the repository root.
+
 ```bash
 # Open MariaDB as root.
 docker compose exec mariadb mariadb -uroot -proot
@@ -298,6 +311,8 @@ docker compose exec mariadb mariadb -ucitizen_service -pcitizen_service citizen_
 ```
 
 ## Playwright
+
+Run from the repository root.
 
 The active browser smoke test is scoped to the DVA CLIK operations dashboard.
 
@@ -318,7 +333,8 @@ pnpm --dir frontend test:e2e:debug -- home.spec.ts
 ## Troubleshooting
 
 - Use Node.js 20.19+ for local Playwright parity; older Node 18 releases can fail to load Playwright ESM config.
-- If Playwright browser dependencies are missing locally, run `pnpm --dir frontend exec playwright install chromium`.
+- If Playwright browser dependencies are missing locally, run `pnpm --dir frontend exec playwright install chromium` from the repository root. In locked-down environments, make sure Playwright can write to its browser cache.
 - If port `5173` is already in use, stop the existing Vite process or change the local dev-server port.
+- If Docker commands fail with a Docker socket or daemon message, start Docker Desktop and rerun them from the repository root.
 - Reset Docker volumes with `docker compose down -v` when you need a clean Drupal/MariaDB state.
 - Rebuild the Docker stack after backend or container configuration changes.

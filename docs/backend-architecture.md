@@ -4,18 +4,16 @@
 
 The backend directory is retained as a Drupal 10 scaffold from the base prototype. For the DVA CLIK role, it represents the implementation path for turning the dashboard concepts into Drupal-native publishing, migration and audit tooling.
 
-## Drupal/GovCMS Fit
+## Drupal Fit
 
-Public DVA and CLIK pages expose Drupal 10 + GovCMS metadata. CLIK also exposes Twig theme debug output for a custom `iconagency` theme and Bootstrap Barrio templates.
-
-That makes a Drupal-first backend appropriate for:
+A Drupal-first backend is appropriate for:
 
 - Content modelling for policy pages and libraries.
 - Workflow configuration for owner review and publication.
 - Taxonomy design for policy area, owner, audience and review cadence.
 - Views dashboards for upload status and remediation queues.
 - Migrate API and Batch API jobs for large-scale upload work.
-- Queue workers for link, accessibility and CLIKChat-readiness checks.
+- Queue workers for link, accessibility and release-readiness checks.
 
 ## Prototype-to-Drupal Mapping
 
@@ -26,7 +24,7 @@ That makes a Drupal-first backend appropriate for:
 | Owner approval | Content Moderation workflow state and role-based permissions |
 | Audit issue | Entity reference field, custom entity or report view |
 | Health check | Admin report route backed by services and Drush commands |
-| CLIKChat readiness | Metadata flags and automated quality signals |
+| Release readiness | Metadata flags and automated quality signals |
 | Status dashboard | Views page, custom controller or admin theme route |
 
 ## Existing Scaffold

@@ -175,6 +175,44 @@ dd {
   gap: 1rem;
 }
 
+.system-alert {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #fff8f6;
+  border: 1px solid #f3c4ba;
+  border-left: 0.35rem solid #c05621;
+  border-radius: 0.5rem;
+}
+
+.system-alert--loading {
+  display: block;
+  color: #334e68;
+  background: #f5f8fa;
+  border-color: #d7e0e7;
+  border-left-color: #6aa7c8;
+}
+
+.system-alert p:last-child {
+  margin-bottom: 0;
+}
+
+.helper-text {
+  color: #52606d;
+}
+
+.button {
+  min-height: 2.75rem;
+  padding: 0.65rem 0.9rem;
+  color: #ffffff;
+  background: #174f8a;
+  border: 1px solid #174f8a;
+  border-radius: 0.25rem;
+  font-weight: 800;
+}
+
 .metric-card {
   display: grid;
   gap: 0.4rem;
@@ -467,8 +505,13 @@ meter {
   }
 
   .hero-panel,
-  .panel {
+  .panel,
+  .system-alert {
     padding: 1rem;
+  }
+
+  .system-alert {
+    flex-direction: column;
   }
 
   .metric-grid,
